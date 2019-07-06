@@ -284,27 +284,85 @@ void GetNext(Str t, int next)
         if(k==-1||t.data[j]==t.data[k])    // k为-1或比较的字符相等时
         {
             j++;k++;   // j,k依次移动到下一个字符
-            next[j] = k;
+            next[j] = k;   // 当相等的时候Fl+1
         }
         else
-            k=next[k];
+            k=next[k];   // 当不相等时，i不变，j回退到j=next[j]（模式串右滑）
     }
 }
 
 // KMP 过程
-i=0;j=0;
-while(s和t都没有扫描完)
-{
-    if(j=-1或他们所指的字符相同)
-        i和j分别增1;
-    else
-        i不变，j回退到j=next[j]（即模式串右滑）
-}
-if(j超界) 返回i-t的长度
-else 返回-1
+// i=0;j=0;
+// while(s和t都没有扫描完)
+// {
+//     if(j=-1或他们所指的字符相同)
+//         i和j分别增1;
+//     else
+//         i不变，j回退到j=next[j]（即模式串右滑）
+// }
+// if(j超界) 返回i-t的长度
+// else 返回-1
 
+
+// 算法复杂度  O(m+n)
 int KMPIndex(Str s, Str t)
 {
     int next[maxSize],i=0,j=0;
     GetNext(t,next);
+    while(i<s.length && j<t.length)
+    {
+        if(j==-1 || s.data[i]==t.data[j])
+        {
+            ++i;
+            ++j;
+        }
+        else
+            j=next[j];    // i不变，j后退
+    }
+    if(j>=t.length)  //匹配成功
+        return (i-t.length);
+    else  return (-1);
+}
+
+
+/*******************************
+ * nextval数组的定义是nextval[0]=-1,当tj=tnext[j]时nextval[j]=nextval[next[j]],否则nextval[j]=next[j].
+ * 
+ */
+void GetNextval(Str t, int nextval[])     // 由模式串t求出nextval值
+{
+    int j=0,k=-1;
+    nextval[0]=-1;
+    while (j<t.length)
+    {
+        if(k==-1 || t.data[j]==t.data[k])
+        {
+            j++;k++;
+            if(t.data[j]!=t.data[k])
+                nextval[j] = k;    // 不等于的时候nextval[j]=next[j]
+            else  
+                nextval[j] = nextval[k];    // 相等的时候nextval[j] = nextval[next[j]]
+        }
+        else
+            k = nextval[k];    // 模式串右滑
+    }
+}
+
+int KMPIndex(Str s,Str t)   // 改进后的KMP算法
+{
+    int nextval[maxSize],i=0,j=0;
+    GetNextval(t,nextval);
+    while(i<s.length&&j<t.length)
+    {
+        if(j==-1||s.data[i]==t.data[j])
+        {
+            i++;j++;
+        }
+        else
+            j = nextval[j];
+    }
+    if(j>=t.length)
+        return  (i-t.length);
+    else
+        return (-1);
 }
