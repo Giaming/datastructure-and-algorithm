@@ -181,3 +181,35 @@ int comp(BTNode *p)
     }
     else return 0;
 }
+
+// 写一个算法求出一个二叉树的深度（二叉树以二叉链表存储）
+// 左子树深度为LD，右子树深度为RD；则整棵树的深度就为max{LD,RD}+1
+int getDepth(BTNode *p)
+{
+    int LD,RD;     
+    if(p==NULL)
+        return 0;
+    else
+    {
+        LD = getDepth(p->lchild);
+        RD = getDepth(p->rchild);
+        return (LD>RD?LD:RD)+1;
+    }    
+}
+
+// 二叉树的查找
+void search(BTNode *p, BTNode *&q, int key)
+{
+    if(p!=NULL)
+    {
+        if(p->data==key)
+            q = p;     
+        else
+        {
+            search(p->lchild,q,key);
+            if(q==NULL)      // 剪枝操作
+                search(p->rchild,q,key);  
+        }
+        
+    }
+}
