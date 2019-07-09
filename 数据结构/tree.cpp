@@ -213,3 +213,93 @@ void search(BTNode *p, BTNode *&q, int key)
         
     }
 }
+
+
+// 层次遍历
+/*******************
+ * 建立一个队列，先将头结点入队列，然后出队列，访问该节点，如果它有左子树，则将左子树的根结点入队，
+ * 如果它有右子树，则将右子树的根结点入队，然后出队列，对出队结点进行访问。
+ */
+void level(BTNode *p)
+{
+    int front,rear;
+    BTNode *queue[maxSize];    // 定义一个循环队列，用来记录将要访问的层次上的结点
+    front = rear = 0;
+    BTNode *q;
+    if(p!=NULL)
+    {
+        rear = (rear+1)%maxSize;
+        queue[rear] = p;    // 根结点入队
+        while(front!=rear)       // 当队列不空的时候进行循环
+        {
+            front = (front+1)%maxSize;
+            q = queue[front];    // 访问队头结点
+            Visit(q);
+            if(q->lchild!=NULL)
+            {
+                rear = (rear+1)%maxSize;
+                queue[rear] = q->lchild;
+            }
+            if(q->rchild!=NULL)
+            {
+                rear = (rear+1)%maxSize;
+                queue[rear] = q->rchild;
+            }
+        }
+    }
+}
+
+
+// 假设一个二叉树采用二叉树链表存储，设计一个算法，求出该二叉树的宽度（具有节点数最多的那一层上的结点个数）
+// 采用非循环队列将访问的结点保存下来，然后记录下层次号。
+typedef struct 
+{
+    BTNode *p;    //结点指针
+    int lno;     // 结点所在层次号
+}St;
+
+int maxNode(BTNode *p)
+{
+    St que[maxSize];
+    int front,rear;
+    int Lno,i,j,n,max;
+    front = rear = 0;    // 将队列置空
+    BTNode *q;
+    if(p!=NULL)
+    {
+        ++rear;
+        que[rear].p = p;  // 树根入队
+        que[rear].lno = 1;    // 已知条件
+        while(front!=rear)
+        {
+            ++front;
+            q = que[front].p;
+            Lno = que[front].lno;      // 关键语句，Lno用来存取当前节点的层次号
+            if(q->lchild!=NULL)
+            {
+                ++rear;
+                que[rear].p = q->lchild;
+                que[rear].lno = Lno+1;    // 关键语句：根据当前结点的层次号推知其孩子结点的层次号
+            }
+            if(q->rchild!=NULL)
+            {
+                ++rear;
+                que[rear].p = q->rchild;
+                que[rear].lno = Lno+1;
+            }
+        }// 循环结束的时候，Lno中保存的是这棵二叉树的最大层次
+        // 以下代码找出含有结点最多的层中的结点数
+        max = 0;
+        for(i=1;i<Lno;i++)
+        {
+            n = 0;
+            for(j=1;j<=rear;j++)
+                if(que[j].lno==i)    // 这里需要对整个队列进行查询
+                    ++n;
+            if(max<n)
+                max = n;
+        }
+        return max;
+    }
+    else return 0;
+}
