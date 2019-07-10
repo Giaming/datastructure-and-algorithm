@@ -303,3 +303,95 @@ int maxNode(BTNode *p)
     }
     else return 0;
 }
+
+
+
+// 线索二叉树的定义
+typedef struct TBTNode
+{
+    char data;
+    int ltag,rtag;    // 线索标记
+    struct TBTNode *lchild;
+    struct TBTNode *rchild;
+}TBTNode;
+
+// 通过中序遍历对二叉树线索化的递归算法如下
+void InThread(TBTNode *p, TBTNode *&pre)
+{
+    if(p!=NULL)
+    {
+        InThread(p->lchild,pre);   // 递归，左子树线索化
+        if(p->lchild==NULL)
+        {
+            p->lchild=pre;    // 建立当前节点的前驱线索
+            p->ltag = 1;
+        }
+        if(pre!=NULL && pre->rchild==NULL)
+        {
+            pre->rchild = p;      // 建立前驱结点的后继线索
+            pre->rtag = 1;
+        }    
+        pre = p;
+        p = p->rchild;
+        InThread(p,pre);   // 递归，右子树线索化
+    }
+}
+
+// 通过中序遍历建立中序线索化二叉树
+void createInThread(TBTNode *root)
+{
+    TBTNode *pre = NULL;   // 前驱结点指针
+    if(root!=NULL)
+    {
+        InThread(root, pre);
+        pre->rchild = NULL;    // 非空二叉树，线索化
+        pre->rtag = 1;     // 后处理中序最后一个结点
+    }
+}
+
+
+
+// 前序线索二叉树
+void preThread(TBTNode *p, TBTNode *&pre)
+{
+    if(p!=NULL)
+    {
+        if(p->lchild==NULL)
+        {
+            p->lchild = pre;
+            p->ltag = 1;
+        }
+        if(pre!=NULL && pre->rchild == NULL)
+        {
+            pre->rchild = p;
+            pre->rtag = 1;
+        }
+        pre = p;
+        // 注意，这里在递归入口处有限制条件，左右指针不是线索才继续递归
+        if(p->ltag == 0)
+            preThread(p->lchild, pre);
+        if(p->rtag == 0)
+            preThread(p->rchild,pre);
+    }
+}
+
+// 后序线索二叉树
+void postThread(TBTNode *p, TBTNode *&pre)
+{
+    if(p!=NULL)
+    {
+        postThread(p->lchild, pre);    // 递归，左子树线索化
+        postThread(p->rchild, pre);     // 递归，右子树线索化
+        if(p->lchild==NULL)
+        {
+            p->lchild=pre;    // 建立当前结点的前驱序列
+            p->ltag = 1;
+        }
+        if(pre!=NULL && pre->rchild==NULL)
+        {
+            pre->rchild = p;   // 建立前驱结点的后继线索
+            pre->rtag = 1;
+        }
+        pre = p;
+    }
+}
