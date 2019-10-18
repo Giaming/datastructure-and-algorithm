@@ -1,6 +1,62 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define maxSize 256
+
+
+// 创建二叉树
+/*******
+用扩号表示法表示str，用ch扫描str，其中只有4类字符，其处理方式如下：
+- 若ch=‘（’：表示前面刚创建的结点p存在孩子结点，需要将其进栈作为栈顶结点，以便建立它和它的孩子结点之间的关系（如果一个结点刚建立完毕，气候一个字符不是‘（’,表示该结点时叶子结点，不需要进栈）。然后喀什处理该结点的左孩子，置k=1（表示气候创建的结点将作为这个栈顶结点的左孩子结点）
+- 若ch=‘）’：表示以栈顶结点为根节点的子树创建完毕，将其退栈
+- 若ch=‘，’：表示开始处理栈顶结点的右孩子结点，置k=2（表示其创建的结点将作为当前栈顶结点的右孩子结点。）
+- 其他情况：只能是单个字符，对应二叉树中的某个结点值，需要创建一个结点p存放该结点值。根据k值建立它与栈顶结点之间的联系。当k=1时，将结点p作为栈顶结点的左孩子；当k=2时，将结点p作为栈顶结点的右孩子。
+*******/
+void CreateBTree(BTNode *&b,char *str)
+{
+    BTNode *St[MaxSize],*p;
+    int top = -1,k,j=0;
+    char ch;
+    b = NULL;    // 初始时二叉链为空
+    ch = str[j];
+    while(chi!=0)
+    {
+        switch (ch)
+        {
+        case '(':
+        top++;St[top]=p;k=1;break;
+        case ')':
+        top--;break;
+        case ',':
+        k=2;break;
+        default:
+        p=(BTNode *)malloc(sizeof(BTNode));    // 创建一个结点，由p指向它
+        p->data = ch;   // 存放结点值
+        p->lchild = p->rchild = NULL;    // 左右指针都置为空
+        if(b==NULL)
+            b=p;
+        else
+        {
+            switch (k)
+            {
+            case 1:
+                St[top]->lchild = p
+                break;
+            case 2:
+                St[top]->rchild = p
+                break;
+            
+            default:
+                break;
+            }
+        }
+            break;
+        }
+        j++;
+        ch = str[j];
+    }
+}
+
+
 // 树的结构体定义
 typedef struct BTNode
 {
