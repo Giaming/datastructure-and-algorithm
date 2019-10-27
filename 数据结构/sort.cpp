@@ -21,7 +21,7 @@
 
 
 // 直接插入排序
-void InsertionSort(int R[], int n)      // n代表n数组的大小
+void InsertSort(int R[], int n)      //待排序关键字存储在R[]中，默认为整型，个数为n
 {
     int i,j;
     int temp;
