@@ -4,8 +4,9 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#define maxSize 100
 
+
+#define maxSize 100
 // 顺序栈定义
 typedef struct 
 {
@@ -13,7 +14,7 @@ typedef struct
     int top;      //栈顶指针
 }SqStack;
 
-//链栈结点丁宁以
+//链栈结点定义
 typedef struct LNode
 {
     int data;
@@ -125,7 +126,6 @@ void push(LNode *lst, int x)
     LNode *p;
     p = (LNode*)malloc(sizeof(LNode));
     p->next = NULL;
-
     p->data = x;
     p->next = lst->next;
     lst->next = p;
@@ -136,8 +136,7 @@ int pop(LNode *lst, int &x)
 {
     LNode *p;
     if(lst->next == NULL)
-        return 0;
-   
+        return 0; 
     p = lst->next;
     x = p->data; 
     lst->next = p->next; 
@@ -281,8 +280,7 @@ int pop(LNode *lst, int &x)
 {
     LNode *p;
     if(lst->next == NULL)
-        return 0;
-   
+        return 0;  
     p = lst->next;
     x = p->data; 
     lst->next = p->next; 
@@ -364,7 +362,6 @@ int com(char exp[])   // 后缀式计算函数
     }
     return stack[top];    
 }
-
 // 将一个字符'5'转换为一个整型变量，只需要执行int a = '5'-'0';
 // 将一个整型变量转换为一个字符,只需要执行 char b = a+'0';
 
@@ -405,6 +402,7 @@ int pop(LNode *&lst, int &x)
     free(p);
     return 1;
 }
+
 
 
 
@@ -451,6 +449,8 @@ int deQueue(SqQueue &qu, int &x)
     x = qu.data[qu.front];
     return 1;
 }
+
+
 
 // 链队
 /***********************************

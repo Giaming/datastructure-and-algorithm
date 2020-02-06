@@ -21,27 +21,29 @@
 
 
 // 直接插入排序
+#include<stdlib.h>
+
 void InsertSort(int R[], int n)      //待排序关键字存储在R[]中，默认为整型，个数为n
 {
     int i,j;
     int temp;
-    for(i=1;i<n;i++)
+    for(i=1;i<n;i++)    //默认第一个元素是有序的
     {
-        temp = R[i];
-        j=i-1;
-        while(R[j]>temp)
+        temp = R[i];     //将待插入关键字暂存在temp中
+        j=i-1;     //从后往前比较
+        while(R[j]>temp&&j>=0)
         {
-            R[j+1] = R[j];
+            R[j+1] = R[j];      //移动元素
             j--;
         }
-        R[j+1] = temp;
+        R[j+1] = temp;   //找到插入位置，将temp中暂存的待排序关键字插入
     }
 }
 
 
 
 // 折半插入排序
-void BinInsertionSort(int R[], int n)
+void BinInsertSort(int R[], int n)
 {
     int i,j;
     int low,high,mid;
@@ -114,24 +116,25 @@ void Shellsort1(int R[],int n)
 
 
 // 冒泡排序
-void BubbleSort(int R[], int n)
+void BubbleSort(int R[], int n)  //将R中元素按从小到大排序
 {
-    int i,j;
-    bool flag;
-    for(i=0;i<n-1;i++)
-    {        
-        for(j=n-1;j>i;j--)
+    int i,j,flag;
+    int temp;
+    for(i=n-1;i>=1;--i)
+    {
+        flag = 0;   //变量flag用来标记本趟排序是否发生了交换
+        for(j=1;j<=i;++j)
         {
-            if(R[j]>R[j-1])      // 将小的元素往前挪
+            if(R[j-1]>R[j])
             {
-                int temp = R[j-1];
-                R[j-1] = R[j];
-                R[j] = temp; 
-                flag = false;
+                temp = R[j];
+                R[j] = R[j-1];
+                R[j-1] = temp;
+                flag = 1;       //如果没发生交换，则flag为0；如果发生交换，则flag=1
             }
         }
-        if(!flag)
-            return;     // 如果序列本来就是有序的话，直接比较一轮就可以完成
+        if(flag==0)
+            return;
     }
 }
 
@@ -169,7 +172,7 @@ void QuickSort(int R[], int low, int high)
 
 
 // 选择排序
-void SelectionSort(int R[], int n)
+void SelectSort(int R[], int n)
 {
     int i,j,k;
     int temp;
@@ -225,4 +228,11 @@ void HeapSort(int R[], int n)
 }
 
 
+// 归并排序
+void Merge(int R[],int low,int mid,int high)
+{
+    int *R1;
+    int i=low,j=mid+1,k=0;
+    R1 = (int *)malloc(high-low+1)*sizeof(int);
 
+}
