@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -721,5 +720,3 @@ void difference(LNode *A, LNode *B)
     }
 }
 
-
->>>>>>> 4dbe4ef86e40e67cef09d32f429434cf6d239a59
